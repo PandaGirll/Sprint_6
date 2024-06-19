@@ -1,22 +1,41 @@
 import allure
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 
+from selenium.webdriver.common.by import By
+from locators.main_page_locators import MainPageLocators
 from locators.order_page_locators import OrderPageLocators
 from pages.base_page import BasePage
 
 
 class OrderPage(BasePage):
 
-    @allure.step('Создание заказа')
-    def create_order(self, order_dict):
-        self.scroll_to_element(order_dict['button'])
-        self.click_to_element(order_dict['button'])
+    @allure.step('Создание заказа по кнопке в верхней части страницы')
+    def create_order_from_header(self, order_dict):
+        self.accept_cookies()
+        self.scroll_to_element(MainPageLocators.ORDER_BUTTON_HEADER)
+        self.click_to_element(MainPageLocators.ORDER_BUTTON_HEADER)
         self.fill_first_form(order_dict)
+        self.next()
+        self.fill_second_form(order_dict)
+        self.submit_order()
+
+    @allure.step('Создание заказа по кнопке в нижней части страницы')
+    def create_order_from_bottom(self, order_dict):
+        self.accept_cookies()
+        self.scroll_page_down()
+        self.scroll_to_element(OrderPageLocators.ORDER_BUTTON_ALL_SIZES)
+        self.click_to_element(OrderPageLocators.ORDER_BUTTON_ALL_SIZES)
+        self.fill_first_form(order_dict)
+        self.next()
+        self.fill_second_form(order_dict)
+        self.submit_order()
+
+    @allure.step('Переход к следующей форме')
+    def next(self):
         self.scroll_to_element(OrderPageLocators.NEXT_BUTTON)
         self.click_to_element(OrderPageLocators.NEXT_BUTTON)
-        self.fill_second_form(order_dict)
+
+    @allure.step('Подтверждение заказа')
+    def submit_order(self):
         self.scroll_to_element(OrderPageLocators.MAKE_ORDER_BUTTON)
         self.click_to_element(OrderPageLocators.MAKE_ORDER_BUTTON)
         self.scroll_to_element(OrderPageLocators.YES_BUTTON)
@@ -60,14 +79,11 @@ class OrderPage(BasePage):
 
     @allure.step('Проверяем наличие окна с информацией о заказе')
     def check_order_status_window(self):
-        return self.find_element_with_wait(OrderPageLocators.STATUS_WINDOW)
+        return self.wait_for_element_visible(OrderPageLocators.STATUS_WINDOW)
 
     @allure.step('Выбираем станцию метро')
     def select_visible_station(self, locator, station_name):
-        WebDriverWait(
-            self.driver, 10).until(
-            EC.visibility_of_element_located(locator)
-        )
+        self.wait_for_element_visible(locator)
         stations = self.find_elements_with_wait(locator)
         for station in stations:
             if station.text.strip() == station_name:

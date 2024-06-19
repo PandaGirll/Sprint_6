@@ -1,9 +1,8 @@
 import allure
 import pytest
-from selenium import webdriver
 
+from selenium import webdriver
 from data import URLs
-from helpers import generate_order_info
 
 
 # Фикстура драйвера для Google Chrome
@@ -16,8 +15,3 @@ def driver():
     driver.get(URLs.main_page)  # переходим на основной url
     yield driver  # передаём драйвер в тесты
     driver.quit()  # закрываем драйвер
-
-
-@pytest.fixture
-def order_info():
-    return generate_order_info()

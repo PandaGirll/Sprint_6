@@ -2,7 +2,6 @@ import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-
 from locators.header_footer_locators import HeaderFooterLocators
 
 
@@ -20,7 +19,7 @@ class BasePage:
     def get_text_from_element(self, locator):
         with allure.step(f'Получение текста из элемента'
                          f' с локатором: {locator}'):
-            element = self.find_element_with_wait(locator)
+            element = self.wait_for_element_visible(locator)
             return element.text
 
     # Метод, который форматирует локаторы
@@ -48,19 +47,25 @@ class BasePage:
 
     @allure.step('Скролл до элемента с локатором {locator}')
     def scroll_to_element(self, locator):
-        element = self.find_element_with_wait(locator)
+        element = self.wait_for_element_visible(locator)
         self.driver.execute_script(
             "arguments[0].scrollIntoView(true);", element)
 
     @allure.step('Ждём и ищем элемент')
-    def find_element_with_wait(self, locator, timeout=10):
+    def wait_for_element_visible(self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until(
-            EC.visibility_of_element_located(locator))
+            EC.visibility_of_element_located(locator),
+            message=f"Элемент с локатором {locator} не "
+                    f"стал видимым в течение {timeout} секунд."
+        )
 
     @allure.step('Ждём и ищем элементы')
     def find_elements_with_wait(self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until(
-            EC.visibility_of_all_elements_located(locator))
+            EC.visibility_of_all_elements_located(locator),
+            message=f"Элементы с локатором {locator} не "
+                    f"стали видимыми в течение {timeout} секунд."
+        )
 
     @allure.step('Скроллим в самый низ')
     def scroll_page_down(self):

@@ -17,4 +17,4 @@ class HeaderFooterPage(BasePage):
 
     @allure.step('Проверка наличия логотипа Дзена')
     def is_dzen_logo_displayed(self):
-        return self.find_element_with_wait(HeaderFooterLocators.DZEN_LOGO).is_displayed()
+        return self.wait_for_element_visible(HeaderFooterLocators.DZEN_LOGO).is_displayed()
