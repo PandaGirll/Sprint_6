@@ -41,10 +41,7 @@ class BasePage:
     @allure.step('Принимаем куки')
     def accept_cookies(self):
         try:
-            cookie_button = WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable(HeaderFooterLocators.COOKIE_BUTTON)
-            )
-            cookie_button.click()
+            self.click_to_element(HeaderFooterLocators.COOKIE_BUTTON)
         except Exception as e:
             print(f"Cookie button not found or not clickable: {str(e)}")
 
