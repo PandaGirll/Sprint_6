@@ -22,7 +22,7 @@ class TestRedirects:
     def test_redirect_yandex_logo(self, driver):
         header_footer_page = HeaderFooterPage(driver)
         header_footer_page.go_to_yandex_from_logo()
-        current_url = driver.current_url
+        current_url = header_footer_page.current_url
 
         assert URLs.dzen_page in current_url, (
             "Переход на главную страницу Дзена не выполнен"
