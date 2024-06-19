@@ -8,13 +8,12 @@ class HeaderFooterPage(BasePage):
     @allure.step('Клик по логотипу Самоката')
     def click_scooter_logo(self):
         self.click_to_element(HeaderFooterLocators.SAMOKAT_LOGO)
-        return self.driver.current_url
+        return self.current_url
 
     @allure.step('Переход по логотипу Яндекса')
     def go_to_yandex_from_logo(self):
         self.click_to_element(HeaderFooterLocators.YANDEX_LOGO)
-        new_tab = self.driver.window_handles[1]
-        self.driver.switch_to.window(new_tab)
+        self.switch_to_tab(1)
 
     @allure.step('Проверка наличия логотипа Дзена')
     def is_dzen_logo_displayed(self):

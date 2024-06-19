@@ -1,4 +1,5 @@
 import allure
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -65,3 +66,17 @@ class BasePage:
     def scroll_page_down(self):
         self.driver.execute_script("window.scrollTo("
                                    "0, document.body.scrollHeight);")
+
+    @allure.step('Переключение на вкладку')
+    def switch_to_tab(self, tab_index):
+        try:
+            window_handles = self.driver.window_handles
+            self.driver.switch_to.window(window_handles[tab_index])
+        except Exception as e:
+            print(f"Ошибка при переключении на вкладку {tab_index}: {str(e)}")
+
+    @allure.step('Ищем элемент по тегу и кликаем')
+    def click_by_tag_name(self, tag_name):
+        with allure.step(f'Клик по элементу по тегу: {tag_name}'):
+            element = self.driver.find_element(By.TAG_NAME, tag_name)
+            element.click()

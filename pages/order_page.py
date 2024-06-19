@@ -45,8 +45,7 @@ class OrderPage(BasePage):
     @allure.step('Установить дату проката')
     def fill_date(self, date_string):
         self.fill(OrderPageLocators.DATE_INPUT, date_string)
-        body_element = self.driver.find_element(By.TAG_NAME, "body")
-        body_element.click()
+        self.click_by_tag_name('body')
 
     @allure.step('Выбор срока аренды')
     def select_rental_duration(self, duration):
