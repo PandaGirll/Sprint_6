@@ -6,7 +6,6 @@ from locators.header_footer_locators import HeaderFooterLocators
 
 
 # Базовые методы, которые будут применяться на каждой странице
-@allure.suite('Базовые методы')
 class BasePage:
     def __init__(self, driver):
         self.driver = driver

@@ -4,7 +4,6 @@ from locators.main_page_locators import MainPageLocators
 from pages.base_page import BasePage
 
 
-@allure.suite('Тесты главной страницы')
 class MainPage(BasePage):
 
     @allure.step('Получаем текста ответа для вопроса {index}')

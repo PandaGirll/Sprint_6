@@ -7,7 +7,6 @@ from locators.order_page_locators import OrderPageLocators
 from pages.base_page import BasePage
 
 
-@allure.suite('Страница заказа самоката')
 class OrderPage(BasePage):
 
     @allure.step('Создание заказа')
